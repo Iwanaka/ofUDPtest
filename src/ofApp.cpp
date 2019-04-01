@@ -27,7 +27,15 @@ void ofApp::update(){
 
     char msg[SIZE];
     udpReciever.Receive(msg, SIZE);
-    if(strlen(msg) > 0) strcpy(recieveArg, msg);
+    if(strlen(msg) > 0) {
+        strcpy(recieveArg, msg);
+        
+        string m = ofToString(recieveArg);
+        archiveMsg.push_back(m);
+        
+        if(5 < archiveMsg.size()) archiveMsg.erase(archiveMsg.begin());
+        
+    }
     
 }
 
@@ -44,17 +52,17 @@ void ofApp::draw(){
             
             ImGui::InputText("arg", sendArg, SIZE);
             
-            if(ImGui::InputText("ip Send", sendIp, 64)){
+            if(ImGui::InputText("send ip", sendIp, 64)){
                 recreateSenderUDP();
             };
             
-            if(ImGui::InputInt(" port Send", &sendPort)){
+            if(ImGui::InputInt(" send port", &sendPort)){
                 if(sendPort < 0) sendPort = 0;
                 if(sendPort >= 65535) sendPort = 65535;
                 recreateSenderUDP();
             };
             
-            if(ImGui::InputInt(" recieve Send", &recievePort)){
+            if(ImGui::InputInt(" recieve port", &recievePort)){
                 if(recievePort < 0) recievePort = 0;
                 if(recievePort >= 65535) recievePort = 65535;
                 recreateRecieveUDP();
@@ -66,8 +74,16 @@ void ofApp::draw(){
             
             ImGui::Text("recieve message");
             ImGui::PushItemWidth(380);
-            ImGui::TextWrapped("%s", recieveArg);
+            //ImGui::TextWrapped("%s", recieveArg);
+            
+            for(int i =0 ;i<archiveMsg.size();i++){
+                
+                ImGui::TextWrapped("    %s",archiveMsg[i].c_str());
+                
+            }
+            
             ImGui::PopItemWidth();
+            
             
         }
         ImGui::End();

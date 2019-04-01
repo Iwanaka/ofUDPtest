@@ -20,8 +20,8 @@ class ofApp : public ofBaseApp{
     ofxUDPManager udpReciever;
     char sendIp[64];
     char sendArg[SIZE], recieveArg[SIZE];
+    vector<string> archiveMsg;
     int sendPort, recievePort;
-    
     bool isBind;
     
     ofxImGui::Gui gui;
